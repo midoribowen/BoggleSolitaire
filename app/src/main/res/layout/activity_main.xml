@@ -25,8 +25,8 @@
         android:textColor="@color/colorPrimaryText" />
 
     <GridView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/gridView"
         android:layout_below="@+id/textView"
         android:layout_marginTop="28dp"
@@ -35,6 +35,18 @@
         android:stretchMode="columnWidth"
         android:textAlignment="gravity"
         android:numColumns="auto_fit"
-        android:layout_centerInParent="true" />
+        android:choiceMode="multipleChoice"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/userInput"
+        android:layout_below="@+id/gridView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="51dp"
+        android:textColor="@color/colorPrimaryText"
+        android:hint="Your letters will appear here..."
+        android:editable="false" />
 
 </RelativeLayout>
