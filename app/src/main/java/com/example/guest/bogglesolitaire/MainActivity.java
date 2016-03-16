@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 mAddButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        pickedWords.add(mUserInput.getText().toString());
+                        pickedWords.add(0, mUserInput.getText().toString());
                         mPickedWordsAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, pickedWords);
                         mListView.setAdapter(mPickedWordsAdapter);
                         mUserInput.setText("");
