@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,11 +21,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayAdapter mAdapter;
-
-    @Bind(R.id.gridView) GridView mGridView;
     public static final String TAG = MainActivity.class.getSimpleName();
+    @Bind(R.id.addButton) Button mAddButton;
+    @Bind(R.id.gridView) GridView mGridView;
+    @Bind(R.id.listView) ListView mListView;
     @Bind(R.id.userInput) TextView mUserInput;
+    ArrayAdapter mWordAdapter;
+    ArrayAdapter mPickedWordsAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,25 +48,45 @@ public class MainActivity extends AppCompatActivity {
         Collections.shuffle(vowelsArrayList);
 
         final ArrayList<String> randomLetters = new ArrayList<>();
+        final ArrayList<String> randomLettersForAdapter = new ArrayList<>();
+        final ArrayList<String> pickedWords = new ArrayList<>();
 
         for(int i = 0; i < 6; i++) {
             randomLetters.add(consonantsArrayList.get(i));
+            randomLettersForAdapter.add(consonantsArrayList.get(i));
         }
         for(int i = 0; i < 2; i++) {
             randomLetters.add(vowelsArrayList.get(i));
+            randomLettersForAdapter.add(vowelsArrayList.get(i));
         }
 
-        mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, randomLetters);
-        mGridView.setAdapter(mAdapter);
+
+        mWordAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, randomLettersForAdapter);
+        mGridView.setAdapter(mWordAdapter);
 
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String letter = new String (parent.getItemAtPosition(position).toString());
-                mAdapter.remove(letter);
-                mAdapter.notifyDataSetChanged();
+                mWordAdapter.remove(letter);
+                mWordAdapter.insert("", position);
+                mWordAdapter.notifyDataSetChanged();
                 mUserInput.append(letter);
+                mAddButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pickedWords.add(mUserInput.getText().toString());
+                        mPickedWordsAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, pickedWords);
+                        mListView.setAdapter(mPickedWordsAdapter);
+                        mUserInput.setText("");
+                        mWordAdapter.clear();
+                        mWordAdapter.addAll(randomLetters);
+                        mWordAdapter.notifyDataSetChanged();
+                    }
+                });
             }
+
+
         });
     }
 }
